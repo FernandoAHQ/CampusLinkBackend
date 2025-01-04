@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Admin } from 'typeorm';
+import { Kiosk } from './typeorm/entities/Kiosk';
 import { Student } from './typeorm/entities/Student';
 import { Section } from './typeorm/entities/Section';
+import { Attendance } from './typeorm/entities/Attendance';
 
 @Module({
   imports: [
@@ -14,7 +17,7 @@ import { Section } from './typeorm/entities/Section';
       username: 'root',
       password: 'root',
       database: 'campus_link',
-      entities: [Student, Section],
+      entities: [Admin, Kiosk, Student, Section, Attendance],
       synchronize: true,
     }),
   ],
