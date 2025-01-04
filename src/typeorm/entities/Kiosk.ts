@@ -23,5 +23,5 @@ export class Kiosk {
   created_at: Timestamp;
 
   @OneToMany(() => Attendance, (attendance) => attendance.kiosk)
-  attendances;
+  attendances: Attendance;
 }
