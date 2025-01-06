@@ -47,6 +47,7 @@ export class AuthenticationService {
       ? {
           status: 'successful',
           message: `Welcome, ${user.username}`,
+          user,
           accessToken,
         }
       : {
