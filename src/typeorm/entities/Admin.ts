@@ -1,3 +1,4 @@
+import { AdminRole } from 'src/admins/dtos/createAdmin.dto';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,11 +12,8 @@ export class Admin {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ type: 'varchar', length: 100 })
-  name: string;
-
-  @Column({ type: 'varchar', length: 100, unique: true })
-  email: string;
+  @Column({ unique: true })
+  username: string;
 
   @Column({ type: 'varchar', length: 255 })
   password: string; // Make sure to hash this before storing it.
@@ -25,7 +23,7 @@ export class Admin {
     enum: ['superadmin', 'admin'],
     default: 'admin',
   })
-  role;
+  role: AdminRole;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Timestamp;

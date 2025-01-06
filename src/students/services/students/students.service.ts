@@ -11,7 +11,39 @@ export class StudentsService {
     @InjectRepository(Student) private studentRepository: Repository<Student>,
   ) {}
 
-  findStudents() {}
+  async findStudents() {
+    try {
+      const students = await this.studentRepository
+        .createQueryBuilder('student')
+        .leftJoinAndSelect('student.section', 'section')
+        .select([
+          'student.id',
+          'student.name',
+          'student.email',
+          'section.name AS major', // Only selecting the section name, not the entire object
+        ])
+        .getRawMany();
+      // .select([
+      //   'student.id',
+      //   'student.name',
+      //   'student.email',
+      //   'section.name', // Only selecting the section name, not the entire object
+      // ])
+      // .getMany();
+
+      return {
+        status: 'success',
+        message: 'Students fetched.',
+        data: students,
+      };
+    } catch (error) {
+      console.log(error.message);
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
+  }
 
   async createStudent(createUserParams: CreateUserParams) {
     const password = await hassPassword(createUserParams.password);

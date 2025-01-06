@@ -8,6 +8,8 @@ import { Section } from './typeorm/entities/Section';
 import { Attendance } from './typeorm/entities/Attendance';
 import { Admin } from './typeorm/entities/Admin';
 import { StudentsModule } from './students/students.module';
+import { AdminsModule } from './admins/admins.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { StudentsModule } from './students/students.module';
       synchronize: true,
     }),
     StudentsModule,
+    AdminsModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

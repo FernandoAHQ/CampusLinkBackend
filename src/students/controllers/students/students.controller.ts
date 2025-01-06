@@ -6,10 +6,12 @@ import { StudentsService } from 'src/students/services/students/students.service
 export class StudentsController {
   constructor(private studentsService: StudentsService) {}
 
-  @Get()
-  getStudents() {}
+  @Get('all')
+  getStudents() {
+    return this.studentsService.findStudents();
+  }
 
-  @Post()
+  @Post('create')
   createStudent(@Body() createStudentDto: CreateStudentDto) {
     return this.studentsService.createStudent(createStudentDto);
   }
