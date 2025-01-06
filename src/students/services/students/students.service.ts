@@ -21,6 +21,11 @@ export class StudentsService {
         password,
       });
       this.studentRepository.save(newUser);
+      return {
+        status: 'success',
+        message: 'Student created successfully.',
+        data: newUser,
+      };
     } catch (error) {
       console.log(error);
       return {
@@ -28,11 +33,5 @@ export class StudentsService {
         message: error.message,
       };
     }
-
-    return {
-      status: 'success',
-      message: 'Student created successfully.',
-      data: createUserParams,
-    };
   }
 }
