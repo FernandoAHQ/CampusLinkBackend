@@ -23,6 +23,9 @@ export class Student {
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;
 
+  @Column({ type: 'varchar', length: 100 })
+  password: string;
+
   @ManyToOne(() => Section, (section) => section.students, {
     onDelete: 'SET NULL',
   })

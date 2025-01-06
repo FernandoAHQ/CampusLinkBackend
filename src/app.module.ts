@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Admin } from 'typeorm';
 import { Kiosk } from './typeorm/entities/Kiosk';
 import { Student } from './typeorm/entities/Student';
 import { Section } from './typeorm/entities/Section';
 import { Attendance } from './typeorm/entities/Attendance';
+import { Admin } from './typeorm/entities/Admin';
+import { StudentsModule } from './students/students.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Attendance } from './typeorm/entities/Attendance';
       entities: [Admin, Kiosk, Student, Section, Attendance],
       synchronize: true,
     }),
+    StudentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

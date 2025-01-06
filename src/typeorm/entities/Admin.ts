@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  Timestamp,
 } from 'typeorm';
 
 @Entity('admins')
@@ -27,5 +28,5 @@ export class Admin {
   role;
 
   @CreateDateColumn({ type: 'timestamp' })
-  created_at;
+  created_at: Timestamp;
 }
