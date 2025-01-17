@@ -28,15 +28,15 @@ export class AuthenticationService {
           message: 'Something went wrong.',
         };
 
-        const accessToken = await this.jwtService.signAsync({
-          id: user.id,
-          username: user.username,
-        })  
+      const accessToken = await this.jwtService.signAsync({
+        id: user.id,
+        username: user.username,
+      });
 
       return {
         status: 'successful',
         user,
-        accessToken
+        accessToken,
       };
     } catch (error) {
       console.error(error);

@@ -28,7 +28,7 @@ export class Student {
   profile_picture: string;
 
   @Column({ type: 'boolean', default: true })
-  ACTIVE: string;
+  active: boolean;
 
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;

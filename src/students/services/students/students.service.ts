@@ -57,17 +57,20 @@ export class StudentsService {
         ...createUserParams,
         password,
       });
-      this.studentRepository.save(newUser);
+      await this.studentRepository.save(newUser);
       return {
         status: 'success',
         message: 'Student created successfully.',
         data: newUser,
       };
     } catch (error) {
-      console.log(error);
+      let errorMessage = error.message;
+      console.log(error.code);
+      if (error.code === 'ER_DUP_ENTRY')
+        errorMessage = 'This email is already registered for another user.';
       return {
         status: 'error',
-        message: error.message,
+        message: errorMessage,
       };
     }
   }
