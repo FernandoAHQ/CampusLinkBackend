@@ -20,6 +20,16 @@ export class Student {
   @Column({ type: 'varchar', length: 100 })
   name: string;
 
+  @Column({
+    type: 'varchar',
+    length: 255,
+    default: 'https://avatar.iran.liara.run/public',
+  })
+  profile_picture: string;
+
+  @Column({ type: 'boolean', default: true })
+  ACTIVE: string;
+
   @Column({ type: 'varchar', length: 100, unique: true })
   email: string;
 

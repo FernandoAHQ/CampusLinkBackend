@@ -19,10 +19,15 @@ export class StudentsService {
         .select([
           'student.id',
           'student.name',
+          'student.active',
+          'student.profile_picture',
           'student.email',
           'section.name AS major', // Only selecting the section name, not the entire object
         ])
         .getRawMany();
+
+      console.log(students);
+
       // .select([
       //   'student.id',
       //   'student.name',
