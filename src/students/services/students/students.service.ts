@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserParams } from 'src/students/utils/types';
+import { CreateUserParams, EditUserParams } from 'src/students/utils/types';
 import { Student } from 'src/typeorm/entities/Student';
-import { hassPassword } from 'src/utils/security';
+import { hashPassword } from 'src/utils/security';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class StudentsService {
         ])
         .getRawMany();
 
-      console.log(students);
+      //console.log(students);
 
       // .select([
       //   'student.id',
@@ -50,8 +50,45 @@ export class StudentsService {
     }
   }
 
+  async editStudent(editUserParams: EditUserParams) {
+    console.log(
+      editUserParams.password ? 'password exists' : 'password does not exist',
+    );
+
+    //const password = await hashPassword(editUserParams.password!);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...updates } = editUserParams;
+    const userData: Partial<Student> = updates;
+    if (editUserParams.password) {
+      userData.password = await hashPassword(editUserParams.password);
+    }
+    try {
+      const newUser = await this.studentRepository.update(
+        { id: editUserParams.id },
+        userData,
+      );
+
+      console.log(newUser);
+
+      return {
+        status: 'success',
+        message: 'Student updated successfully.',
+        data: newUser,
+      };
+    } catch (error) {
+      let errorMessage = error.message;
+      console.log(error.code);
+      if (error.code === 'ER_DUP_ENTRY')
+        errorMessage = 'This email is already registered for another user.';
+      return {
+        status: 'error',
+        message: errorMessage,
+      };
+    }
+  }
+
   async createStudent(createUserParams: CreateUserParams) {
-    const password = await hassPassword(createUserParams.password);
+    const password = await hashPassword(createUserParams.password);
     try {
       const newUser = this.studentRepository.create({
         ...createUserParams,

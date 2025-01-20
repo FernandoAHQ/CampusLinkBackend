@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAdminParams } from 'src/admins/utils/types';
 import { Admin } from 'src/typeorm/entities/Admin';
-import { hassPassword } from 'src/utils/security';
+import { hashPassword } from 'src/utils/security';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class AdminsService {
   ) {}
 
   async createAdmin(createAdminParams: CreateAdminParams) {
-    const password = await hassPassword(createAdminParams.password);
+    const password = await hashPassword(createAdminParams.password);
 
     try {
       const newUser = this.adminRepository.create({
