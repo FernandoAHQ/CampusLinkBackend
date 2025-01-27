@@ -4,10 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Admin } from 'src/typeorm/entities/Admin';
 import { AuthenticationController } from './controller/authentication.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { Student } from 'src/typeorm/entities/Student';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Admin]),
+    TypeOrmModule.forFeature([Admin, Student]),
     JwtModule.register({
       global: true,
       secret: 'MarianitaSecretSeed',

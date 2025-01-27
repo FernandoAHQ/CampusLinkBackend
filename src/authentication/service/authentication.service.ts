@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AdminLoginParams } from '../utils/types';
+import { AdminLoginParams, StudentLoginParams } from '../utils/types';
 import { FindOptionsWhere } from 'typeorm';
 import { Admin } from 'src/typeorm/entities/Admin';
 import { comparePassword } from 'src/utils/security';
 import { JwtService } from '@nestjs/jwt';
+import { Student } from 'src/typeorm/entities/Student';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
+    @InjectRepository(Student) private studentRepository: Repository<Student>,
     private jwtService: JwtService,
   ) {}
 
@@ -62,16 +64,36 @@ export class AuthenticationService {
     }
   }
 
+
+  async studentLogin(studentLoginParams: StudentLoginParams) {
+    const { email, password } = studentLoginParams;
+    try {
+      const user = await this.studentRepository.findOne({
+        where: { email } as FindOptionsWhere<Student>, 
+      });
+
+      if (!user)
+        return {
+          status: 'failed',
+          message: 'Incorrect login credentials.',
+        };
+
+      return this.getStudentLoginResponse(password, user);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async getAdminLoginResponse(password: string, user: Admin) {
     const isMatch = await comparePassword(password, user.password);
-
+  
     const accessToken = isMatch
       ? await this.jwtService.signAsync({
           id: user.id,
           username: user.username,
         })
       : null;
-
+  
     const response = isMatch
       ? {
           status: 'successful',
@@ -83,7 +105,34 @@ export class AuthenticationService {
           status: 'failed',
           message: 'Incorrect login credentials.',
         };
-
+  
     return response;
   }
+  
+  async getStudentLoginResponse(password: string, user: Student) {
+    const isMatch = await comparePassword(password, user.password);
+  
+    const accessToken = isMatch
+      ? await this.jwtService.signAsync({
+          id: user.id,
+          email: user.email,
+        })
+      : null;
+  
+    const response = isMatch
+      ? {
+          status: 'successful',
+          message: `Welcome, ${user.name}`,
+          user,
+          accessToken,
+        }
+      : {
+          status: 'failed',
+          message: 'Incorrect login credentials.',
+        };
+  
+    return response;
+  }
+  
 }
+
