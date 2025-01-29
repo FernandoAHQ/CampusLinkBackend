@@ -10,6 +10,8 @@ import { Admin } from './typeorm/entities/Admin';
 import { StudentsModule } from './students/students.module';
 import { AdminsModule } from './admins/admins.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { ArticlesModule } from './articles/articles.module';
+import { Article } from './articles/entities/article.entity';
 
 @Module({
   imports: [
@@ -20,12 +22,13 @@ import { AuthenticationModule } from './authentication/authentication.module';
       username: 'root',
       password: 'root',
       database: 'campus_link',
-      entities: [Admin, Kiosk, Student, Section, Attendance],
+      entities: [Admin, Kiosk, Student, Section, Attendance, Article],
       synchronize: true,
     }),
     StudentsModule,
     AdminsModule,
     AuthenticationModule,
+    ArticlesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

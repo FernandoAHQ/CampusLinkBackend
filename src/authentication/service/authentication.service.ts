@@ -45,6 +45,36 @@ export class AuthenticationService {
     }
     return 'hi';
   }
+  
+  async renewTokenStudent(request: Request) {
+    console.log('USER ID: ' + request['id']);
+    const id = request['id'];
+    try {
+      const user = await this.studentRepository.findOne({
+        where: { id } as FindOptionsWhere<Student>, // Correct structure
+      });
+
+      if (!user)
+        return {
+          status: 'failed',
+          message: 'Something went wrong.',
+        };
+
+      const accessToken = await this.jwtService.signAsync({
+        id: user.id,
+        email: user.email,
+      });
+
+      return {
+        status: 'successful',
+        user,
+        accessToken,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+    return 'hi';
+  }
   async adminLogin(adminLoginParams: AdminLoginParams) {
     const { username, password } = adminLoginParams;
     try {
@@ -73,6 +103,7 @@ export class AuthenticationService {
       });
 
       if (!user)
+        
         return {
           status: 'failed',
           message: 'Incorrect login credentials.',

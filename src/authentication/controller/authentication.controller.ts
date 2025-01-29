@@ -23,4 +23,11 @@ export class AuthenticationController {
   renewAdmin(@Request() request: Request) {
     return this.authenticationService.renewTokenAdmin(request);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('/renew/student')
+  renewStudent(@Request() request: Request) {
+    return this.authenticationService.renewTokenStudent(request);
+  }
 }
+
