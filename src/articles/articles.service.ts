@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
@@ -16,6 +16,32 @@ export class ArticlesService {
       const articles = await this.articleRepository.find({
         where: { active: true },
         select: ['id', 'title', 'created_at', 'tags', 'image_url'],
+      });
+            return {
+        status: 'success',
+        message: 'Articles fetched.',
+        data: articles,
+      };
+    } catch (error) {
+      console.log(error.message);
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
+  }
+
+  async findAllAdmin(query: string) {
+    query = query? query: '';
+    console.log(`QUERY: ${query}`);
+    
+    try {
+      const articles = await this.articleRepository.find({
+        where: [
+          { title: ILike(`%${query}%`) },
+          { content: ILike(`%${query}%`) },
+          { tags: ILike(`%${query}%`) },
+        ],
       });
             return {
         status: 'success',
